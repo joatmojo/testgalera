@@ -1,0 +1,28 @@
+---
+- name: Reload Galera Service
+  systemd:
+    daemon_reload: yes
+  when:
+    - service_init_status.stat.islnk is defined
+    - service_init_status.stat.islnk
+
+- name: Get Galera Service Info
+  shell: service mysql status | grep not-found || true
+  args:
+    warn: false
+  register: galera_service_info
+  when:
+    - service_init_status.stat.exists
+
+- name: Disable Galera Service
+  service:
+    name: mysql
+    enabled: no
+    state: stopped
+  when:
+    - galera_service_info.stdout.find("not-found") == -1
+ 
+- name: Kill All Remaining Galera Service
+  shell: killall -9 mysqld || true
+  args:
+    warn: false

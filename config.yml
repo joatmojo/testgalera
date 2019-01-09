@@ -1,0 +1,15 @@
+---
+- hosts: all
+  any_errors_fatal: true
+  roles:
+  - role: common
+
+- hosts: galera_node
+  any_errors_fatal: true
+  roles:
+  - role: galera_node
+
+- hosts: galera_lb
+  any_errors_fatal: true
+  roles:
+  - role: galera_lb

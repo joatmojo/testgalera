@@ -1,0 +1,11 @@
+---
+- name: Remove Galera User
+  user:
+    name: mysql
+    force: yes
+    state: absent
+
+- name: Remove Galera Group
+  group:
+    name: mysql
+    state: absent

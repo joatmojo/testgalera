@@ -1,0 +1,10 @@
+---
+- include: facts.yml
+
+- include: galera_node_configs.yml
+
+- include: galera_node_bootstraps.yml
+
+- include: galera_node_services.yml
+
+- include: galera_node_securities.yml

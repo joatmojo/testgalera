@@ -1,0 +1,50 @@
+---
+- name: Disable Galera Cluster Check as Know Services
+  lineinfile:
+    path: /etc/services
+    line: 'mysqlchk    9200/tcp      # MySQL Check'
+    state: absent
+
+- name: Uninstall Galera Packages
+  apt:
+    name: "{{ item }}"
+    force_apt_get: yes
+    autoremove: yes
+    autoclean: yes
+    purge: yes
+    state: absent
+  with_items:
+    - percona-xtradb-cluster-garbd-{{ galera_version_major }}.{{ galera_version_minor }}
+    - percona-xtradb-cluster-common-{{ galera_version_major }}.{{ galera_version_minor }}
+    - percona-xtradb-cluster-server-{{ galera_version_major }}.{{ galera_version_minor }}
+    - percona-xtradb-cluster-client-{{ galera_version_major }}.{{ galera_version_minor }}
+    - percona-xtradb-cluster-galera-3.x
+    - percona-xtrabackup-24
+  when:
+    - galera_distribution == 'percona'
+
+- name: Uninstall Galera Repository
+  apt:
+    name: "{{ item }}"
+    force_apt_get: yes
+    autoremove: yes
+    autoclean: yes
+    purge: yes
+    state: absent
+  with_items:
+    - percona-release
+  when:
+    - galera_distribution == 'percona'
+
+- name: Install AppArmor Packages
+  apt:
+    name: "{{ item }}"
+    force_apt_get: yes
+    update_cache: yes
+    autoremove: yes
+    autoclean: yes
+    state: present
+  with_items:
+    - apparmor
+  when:
+    - galera_distribution == 'percona'
