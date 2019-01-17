@@ -3,6 +3,13 @@ galera_version_major=5
 galera_version_minor=7
 galera_root_password=root
 
+zfs_backend=true
+zfs_block_device=sdb
+zfs_block_wipe=true
+zfs_pool_wipe=true
+zfs_dataset_wipe=true
+
+
 [galera_node]
 172.10.11.12
 172.10.11.13
